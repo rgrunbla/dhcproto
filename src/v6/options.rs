@@ -105,35 +105,35 @@ pub enum DhcpOption {
 /// wrapper around interface id
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct InterfaceId {
-    id: String,
+    pub id: String,
 }
 
 /// vendor options
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VendorOpts {
-    num: u32,
+    pub num: u32,
     // encapsulated options values
-    opts: DhcpOptions,
+    pub opts: DhcpOptions,
 }
 
 /// reconfigure message
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct ReconfMsg {
-    msg_type: MessageType,
+    pub msg_type: MessageType,
 }
 
 /// vendor class
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct VendorClass {
-    num: u32,
-    data: Vec<String>,
+    pub num: u32,
+    pub data: Vec<String>,
     // each item in data is [len (2 bytes) | data]
 }
 
 /// user class
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct UserClass {
-    data: Vec<String>,
+    pub data: Vec<String>,
     // each item in data is [len (2 bytes) | data]
 }
 
@@ -154,9 +154,9 @@ fn decode_strings(decoder: &'_ mut Decoder<'_>) -> Vec<String> {
 /// Server Unicast
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct StatusCode {
-    status: Status,
+    pub status: Status,
     // 2 + len
-    msg: String,
+    pub msg: String,
 }
 
 /// Status code for Server Unicast
@@ -255,18 +255,18 @@ impl From<Status> for u16 {
 /// Server Unicast
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct ServerUnicast {
-    addr: Ipv6Addr,
+    pub addr: Ipv6Addr,
 }
 
 /// Authentication
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Authentication {
-    proto: u8,
-    algo: u8,
-    rdm: u8,
-    replay_detection: u64,
+    pub proto: u8,
+    pub algo: u8,
+    pub rdm: u8,
+    pub replay_detection: u64,
     // 11 + len
-    info: Vec<u8>,
+    pub info: Vec<u8>,
 }
 
 impl Decodable for Authentication {
@@ -292,7 +292,7 @@ pub struct RelayMsg {
     ///                whose address is in the peer-address field of the
     ///                Relay-reply message
     // TODO: should we decode this into a `Message`?
-    msg: Vec<u8>,
+    pub msg: Vec<u8>,
 }
 
 /// Elapsed Time
@@ -300,13 +300,13 @@ pub struct RelayMsg {
 pub struct ElapsedTime {
     /// elapsed time in millis
     // TODO: use Duration?
-    elapsed: u16,
+    pub elapsed: u16,
 }
 
 /// Preference
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct Preference {
-    pref: u8,
+    pub pref: u8,
 }
 
 /// Option Request Option
@@ -314,7 +314,7 @@ pub struct Preference {
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ORO {
     // 2 * num opts
-    opts: Vec<OptionCode>,
+    pub opts: Vec<OptionCode>,
 }
 
 impl Decodable for ORO {
@@ -336,11 +336,11 @@ impl Decodable for ORO {
 /// Identity Association for Temporary Addresses
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct IATA {
-    id: u32,
+    pub id: u32,
     // 4 + opts.len()
     // should this be Vec<DhcpOption> ?
     // the RFC suggests it 'encapsulates options'
-    opts: DhcpOptions,
+    pub opts: DhcpOptions,
 }
 
 impl Decodable for IATA {
@@ -355,11 +355,11 @@ impl Decodable for IATA {
 /// Identity Association for Non-Temporary Addresses
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct IANA {
-    id: u32,
-    t1: u32,
-    t2: u32,
+    pub id: u32,
+    pub t1: u32,
+    pub t2: u32,
     // 12 + opts.len()
-    opts: DhcpOptions,
+    pub opts: DhcpOptions,
 }
 
 impl Decodable for IANA {
@@ -376,11 +376,11 @@ impl Decodable for IANA {
 /// Identity Association Prefix Delegation
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct IAPD {
-    id: u32,
-    t1: u32,
-    t2: u32,
+    pub id: u32,
+    pub t1: u32,
+    pub t2: u32,
     // 12 + opts.len()
-    opts: DhcpOptions,
+    pub opts: DhcpOptions,
 }
 
 impl Decodable for IAPD {
@@ -397,12 +397,12 @@ impl Decodable for IAPD {
 /// Identity Association Prefix Delegation Prefix Option
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct IAPDPrefix {
-    preferred_lifetime: u32,
-    valid_lifetime: u32,
-    prefix_len: u8,
-    prefix_ip: Ipv6Addr,
+    pub preferred_lifetime: u32,
+    pub valid_lifetime: u32,
+    pub prefix_len: u8,
+    pub prefix_ip: Ipv6Addr,
     // 25 + opts.len()
-    opts: DhcpOptions,
+    pub opts: DhcpOptions,
 }
 impl Decodable for IAPDPrefix {
     fn decode(decoder: &'_ mut Decoder<'_>) -> DecodeResult<Self> {
@@ -419,13 +419,13 @@ impl Decodable for IAPDPrefix {
 /// Identity Association Address
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct IAAddr {
-    addr: Ipv6Addr,
-    preferred_life: u32,
-    valid_life: u32,
+    pub addr: Ipv6Addr,
+    pub preferred_life: u32,
+    pub valid_life: u32,
     // 24 + opts.len()
     // should this be DhcpOptions ?
     // the RFC suggests it 'encapsulates options'
-    opts: DhcpOptions,
+    pub opts: DhcpOptions,
 }
 
 impl Decodable for IAAddr {
@@ -442,9 +442,9 @@ impl Decodable for IAAddr {
 /// fallback for options not yet implemented
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct UnknownOption {
-    code: u16,
-    len: u16,
-    bytes: Vec<u8>,
+    pub code: u16,
+    pub len: u16,
+    pub bytes: Vec<u8>,
 }
 
 impl Decodable for DhcpOptions {
